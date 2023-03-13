@@ -4,4 +4,24 @@
 
 html {
   @apply bg-gray-200;
-} 
+}
+
+@layer utilities {
+  .background-animate {
+    background-size: 400%;
+
+    -webkit-animation: BackgroundPosition 2s ease infinite;
+    -moz-animation: BackgroundPosition 2s ease infinite;
+    animation: BackgroundPosition 2s ease infinite;
+  }
+
+  @keyframes BackgroundPosition {
+    0%,
+    100% {
+      background-position-x: 0%;
+    }
+    50% {
+      background-position-x: 100%;
+    }
+  }
+}

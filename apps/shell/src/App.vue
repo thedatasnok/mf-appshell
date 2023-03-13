@@ -1,5 +1,18 @@
 <script setup lang="ts">
+import { TransitionRoot } from '@headlessui/vue';
+import { onMounted, ref } from 'vue';
 import { RouterView } from 'vue-router';
+import SearchDialog from './components/SearchDialog.vue';
+
+const showSearch = ref(false);
+
+onMounted(() => {
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' && e.ctrlKey) {
+      showSearch.value = true;
+    }
+  });
+});
 </script>
 
 <template>
@@ -11,15 +24,37 @@ import { RouterView } from 'vue-router';
         <h1 class="font-bold">mf-appshell</h1>
 
         <div
-          class="group flex-1 rounded-md border outline-black transition-colors focus-within:border-black"
+          class="group relative flex-1 rounded-md border outline-black transition-colors focus-within:border-black"
         >
+          <button @click="showSearch = true">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="absolute top-1/2 left-1 h-6 w-6 -translate-y-1/2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+              />
+            </svg>
+          </button>
+
           <input
             type="text"
-            class="h-full w-full border-0 bg-transparent focus:outline-none focus:ring-transparent"
+            class="h-full w-full border-0 bg-transparent pl-8 focus:outline-none focus:ring-transparent"
+            placeholder="Search..."
           />
         </div>
 
-        <figure class="h-8 w-8 rounded-full bg-gray-300"></figure>
+        <figure
+          class="flex h-8 w-8 items-center justify-center rounded-full border border-black/10 bg-cyan-600 shadow-sm"
+        >
+          <p class="font-semibold text-white">D</p>
+        </figure>
       </div>
     </header>
 
@@ -27,4 +62,8 @@ import { RouterView } from 'vue-router';
       <RouterView />
     </main>
   </div>
+
+  <TransitionRoot appear :show="showSearch" as="template">
+    <SearchDialog @close="showSearch = false" />
+  </TransitionRoot>
 </template>
