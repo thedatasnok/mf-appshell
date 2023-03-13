@@ -1,0 +1,24 @@
+{
+  "name": "@mf-appshell/ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "files": [
+    "postcss.config.cjs",
+    "tailwind.config.cjs",
+    "styles.css"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@headlessui/tailwindcss": "^0.1.2",
+    "@tailwindcss/forms": "^0.5.3",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.7"
+  }
+}

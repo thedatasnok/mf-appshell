@@ -1,0 +1,9 @@
+{
+  "name": "@mf-appshell/workspace",
+  "version": "0.0.0",
+  "description": "Workspace root",
+  "devDependencies": {
+    "prettier": "^2.8.4",
+    "prettier-plugin-tailwindcss": "^0.2.4"
+  }
+}
