@@ -5,8 +5,34 @@ import {
   DialogTitle,
   TransitionChild,
 } from '@headlessui/vue';
+import { useRouter } from 'vue-router';
+import { useDebounce } from '@vueuse/core';
+import { computed, ref } from 'vue';
 
 const emits = defineEmits(['close']);
+
+const router = useRouter();
+const routes = router
+  .getRoutes()
+  .filter((route) => route.meta.navigable)
+  .map((route) => route.meta);
+
+const searchValue = ref('');
+const debouncedSearchValue = useDebounce(searchValue, 200);
+const filteredRoutes = computed(() => {
+  const search = debouncedSearchValue.value.toLowerCase();
+
+  if (search.length === 0) {
+    return routes;
+  }
+
+  return routes.filter((route) => route.name.toLowerCase().includes(search));
+});
+
+const navigateTo = (route: (typeof filteredRoutes.value)[number]) => {
+  router.push(route.href);
+  emits('close');
+};
 
 const handleKeyup = () => void 0;
 
@@ -45,7 +71,7 @@ const handleKeypress = (e: KeyboardEvent) => {
       <div class="fixed inset-0 bg-black bg-opacity-20"></div>
     </TransitionChild>
 
-    <div class="fixed inset-0 overflow-y-auto" @keyup="handleKeyup">
+    <div class="fixed inset-0 overflow-y-auto" @keyup="handleKeypress">
       <div class="flex min-h-full items-center justify-center p-4 text-center">
         <TransitionChild
           as="template"
@@ -85,6 +111,7 @@ const handleKeypress = (e: KeyboardEvent) => {
                 type="text"
                 class="h-full w-full border-0 bg-transparent pl-8 focus:outline-none focus:ring-transparent"
                 placeholder="Search for a page"
+                v-model="searchValue"
               />
             </div>
 
@@ -94,7 +121,7 @@ const handleKeypress = (e: KeyboardEvent) => {
 
             <div class="flex gap-1">
               <div
-                v-for="(_, i) in Array(7)"
+                v-for="route in filteredRoutes"
                 tabindex="0"
                 class="flex cursor-pointer gap-1 rounded-md border bg-gray-100 px-0.5 py-1 text-gray-800 outline-none focus:border-cyan-600 focus:text-cyan-600"
               >
@@ -112,23 +139,24 @@ const handleKeypress = (e: KeyboardEvent) => {
                     d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
                   />
                 </svg>
-                <p class="text-xs">Page {{ i + 1 }}</p>
+                <p class="text-xs">{{ route.name }}</p>
               </div>
             </div>
 
             <p class="mt-2 text-xs font-medium text-gray-700">
-              Showing 10 results
+              Showing {{ filteredRoutes.length }} results
             </p>
 
             <div class="mt-1 flex flex-col divide-y divide-gray-300">
               <a
-                v-for="_ in Array(10)"
+                v-for="route in filteredRoutes"
                 tabindex="0"
                 class="group cursor-pointer outline-none"
                 @keydown="handleKeypress"
+                @click="navigateTo(route)"
               >
                 <div
-                  class="flex items-center gap-1 rounded-md p-2 ring-gray-200 focus:ring-2 group-focus:bg-cyan-600 group-focus:text-white my-0.5"
+                  class="my-0.5 flex items-center gap-1 rounded-md p-2 ring-gray-200 focus:ring-2 group-focus:bg-cyan-600 group-focus:text-white"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -144,7 +172,7 @@ const handleKeypress = (e: KeyboardEvent) => {
                       d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
                     />
                   </svg>
-                  <p class="font-medium">A page</p>
+                  <p class="font-medium">{{ route.name }}</p>
                 </div>
               </a>
             </div>
