@@ -34,7 +34,25 @@ const navigateTo = (route: (typeof filteredRoutes.value)[number]) => {
   emits('close');
 };
 
-const handleKeyup = () => void 0;
+const handleFrequentKeypress = (e: KeyboardEvent) => {
+  const target = e.target as HTMLElement;
+
+  const KEY_MAP: { [k: string]: () => void } = {
+    ArrowRight: () => {
+      (target.nextSibling as HTMLElement)?.focus?.();
+    },
+    ArrowLeft: () => {
+      (target.previousSibling as HTMLElement)?.focus?.();
+    },
+    Enter: () => {
+      target.click?.();
+    },
+  };
+
+  if (e.key in KEY_MAP) {
+    KEY_MAP[e.key]();
+  }
+};
 
 const handleKeypress = (e: KeyboardEvent) => {
   const target = e.target as HTMLElement;
@@ -71,7 +89,7 @@ const handleKeypress = (e: KeyboardEvent) => {
       <div class="fixed inset-0 bg-black bg-opacity-20"></div>
     </TransitionChild>
 
-    <div class="fixed inset-0 overflow-y-auto" @keyup="handleKeypress">
+    <div class="fixed inset-0 overflow-y-auto">
       <div class="flex min-h-full items-center justify-center p-4 text-center">
         <TransitionChild
           as="template"
@@ -120,9 +138,11 @@ const handleKeypress = (e: KeyboardEvent) => {
             </h4>
 
             <div class="flex gap-1">
-              <div
+              <a
                 v-for="route in filteredRoutes"
                 tabindex="0"
+                @keydown="handleFrequentKeypress"
+                @click="navigateTo(route)"
                 class="flex cursor-pointer gap-1 rounded-md border bg-gray-100 px-0.5 py-1 text-gray-800 outline-none focus:border-cyan-600 focus:text-cyan-600"
               >
                 <svg
@@ -140,7 +160,7 @@ const handleKeypress = (e: KeyboardEvent) => {
                   />
                 </svg>
                 <p class="text-xs">{{ route.name }}</p>
-              </div>
+              </a>
             </div>
 
             <p class="mt-2 text-xs font-medium text-gray-700">
