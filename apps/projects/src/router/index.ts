@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '@/views/HomeView.vue';
+import routes from './routes';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -14,23 +14,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView,
-      meta: {
-        name: 'Home',
-        navigable: true,
-        href: '/',
-      },
-    },
-    {
-      path: '/projects',
-      name: 'projects',
-      component: () => import('@/views/ProjectsView.vue'),
-      meta: {
-        name: 'Projects',
-        navigable: true,
-        href: '/projects',
-      },
+      children: routes,
     },
   ],
 });

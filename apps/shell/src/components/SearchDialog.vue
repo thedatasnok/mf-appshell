@@ -143,7 +143,7 @@ const handleKeypress = (e: KeyboardEvent) => {
                 tabindex="0"
                 @keydown="handleFrequentKeypress"
                 @click="navigateTo(route)"
-                class="flex cursor-pointer gap-1 rounded-md border bg-gray-100 px-0.5 py-1 text-gray-800 outline-none focus:border-cyan-600 focus:text-cyan-600"
+                class="flex cursor-pointer gap-1 rounded-md border bg-gray-100 px-0.5 py-1 text-gray-800 outline-none transition-all hover:border-cyan-600 hover:text-cyan-600 focus:border-cyan-600 focus:text-cyan-600"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -176,7 +176,7 @@ const handleKeypress = (e: KeyboardEvent) => {
                 @click="navigateTo(route)"
               >
                 <div
-                  class="my-0.5 flex items-center gap-1 rounded-md p-2 ring-gray-200 focus:ring-2 group-focus:bg-cyan-600 group-focus:text-white"
+                  class="my-0.5 flex items-center gap-1 rounded-md p-2 ring-gray-200 focus:ring-2 group-hover:bg-cyan-600 group-hover:text-white group-focus:bg-cyan-600 group-focus:text-white transition-all"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

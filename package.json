@@ -4,6 +4,7 @@
   "description": "Workspace root",
   "devDependencies": {
     "prettier": "^2.8.4",
-    "prettier-plugin-tailwindcss": "^0.2.4"
+    "prettier-plugin-tailwindcss": "^0.2.4",
+    "serve": "^14.2.0"
   }
 }

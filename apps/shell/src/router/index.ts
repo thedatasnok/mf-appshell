@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
+//@ts-ignore
+import projectsRoutes from 'projects/routes';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -20,7 +22,7 @@ const router = createRouter({
         name: 'Home',
         navigable: true,
         href: '/',
-      }
+      },
     },
     {
       path: '/profile',
@@ -31,6 +33,16 @@ const router = createRouter({
         navigable: true,
         href: '/profile',
       },
+    },
+    {
+      path: '/projects',
+      name: 'projects',
+      // @ts-ignore
+      children: projectsRoutes.map((route) => ({
+        ...route,
+        path: route.path.replace('/', ''),
+        meta: { ...route.meta, href: `/projects${route.meta.href}` },
+      })),
     },
   ],
 });
