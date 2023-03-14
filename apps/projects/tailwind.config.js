@@ -1,0 +1,1 @@
+module.exports = require("@mf-appshell/ui/tailwind.config.js");
